@@ -1,0 +1,42 @@
+Introduction
+
+Structured-> SQL (MySQL, Postgre, MSSQL, Oracle) , neatly arranged in folders/sub-folders by date_time_stamp
+							-> every datapoint commit to a schema
+	single video-> structured images in an array, fixed FPS, fixed audio playback!
+
+Semi-structure -> graph, XML, JSON, images, Excel/CSV/TSV
+
+Unstructured-> blob, images, text, emails, group of videos
+
+
+2 types of architectures:
+Lambda
+	-> 2 separate processes- one for Batch, one for Stream (legacy systems), or if the processing of batch and stream was significantly different
+
+Kappa
+	-> UNIFIED architecture (batch & stream), modern cost-saving architecture, the processing of batch and stream needs to be same!
+		-> speed layer, batch layer
+
+
+
+OLTP v/s OLAP Databases
+
+OLTP- Online transactional process
+							- No/SQL DB -MySQL, SQL, Postgre, MongoDB, Graph ql
+							- website, mobile apps, software
+							- upto TB
+							- 1st, 2nd, 3rd normal form for optimisation-> storage optimisation -> ACID principles -> JOIN operations
+							- DB is normalised
+
+OLAP - Online Analytical process 
+							- SQL DW - Synapse, BigQuery, BigTable, Apache Hive, HBase
+						- Data analytics, ML, AI
+						-> From TB to PB
+						-> JOIN ops are worst performing OPS!!!
+					-> we stay away from the db normalisation!
+				-> instead, we go with 1 big FLAT table!
+					-> DW is denormalised!
+
+
+
+
