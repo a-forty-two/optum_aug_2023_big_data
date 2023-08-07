@@ -124,5 +124,28 @@ Total cost-> 12ms
 
 Even the slightest edits mean that you have to SCAN the entire warehouse!!!
 
+3 types of data engineering activities:
+(Common for DA or ML or DS….)
+
+Extract-Load (EL) : 
+	1. Data is clean and no more changes
+	2. DIRECTLY use the data
+	3. Example: loading into Power BI!
+	4. Mostly individual or small teams
+
+Extract-Transform-Load (ETL):
+	1. Data requires cleaning 
+	2. MISSION SPECIFIC- you need to know your entire data transformation journey before building the pipeline-> and its specific only to 1 task!
+	3. ML pipelines, data cleaning pipelines, Kubernetes pipelines, data migration pipelines
+	4. Cost effective for small teams
+
+Extract-Load-Transform (ELT):
+	1. Data may or may not require cleaning
+	2. Objective is to get ALL the data into cloud first to avoid any latency going forward and have a SINGLE SOURCE OF TRUTH
+	3. Used when we have multiple missions from the same data-> example-> ML, DA and DE activities required on the same dataset!
+	4. Cost effective for LARGE teams
+	5. COLLECT EVERYTHING INTO THE CLOUD; and THEN FIGURE OUT WHAT TO DO NEXT!
+	6. Medical dataset-> HR dept wants to find out which patients need funding support, hospital management wants to find out which customers are more likely to book premium rooms; a doctor may want to look up records of a particular patient and share it with anonymisation with other doctors!
+
 
 
