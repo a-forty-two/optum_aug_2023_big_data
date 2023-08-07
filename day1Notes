@@ -1,5 +1,13 @@
 Introduction
 
+Day 1-> Big data overview and processes
+Day 2-> batch, Scala intro
+Day 3-> Stream 
+Day 4-> advanced batch and stream process/time windows
+Day 5 -> AI and ML 
+
+
+
 Structured-> SQL (MySQL, Postgre, MSSQL, Oracle) , neatly arranged in folders/sub-folders by date_time_stamp
 							-> every datapoint commit to a schema
 	single video-> structured images in an array, fixed FPS, fixed audio playback!
@@ -27,16 +35,94 @@ OLTP- Online transactional process
 							- upto TB
 							- 1st, 2nd, 3rd normal form for optimisation-> storage optimisation -> ACID principles -> JOIN operations
 							- DB is normalised
+					-> Great for editing, poor for searching 
 
 OLAP - Online Analytical process 
 							- SQL DW - Synapse, BigQuery, BigTable, Apache Hive, HBase
 						- Data analytics, ML, AI
-						-> From TB to PB
+						-> From TB to PB+
 						-> JOIN ops are worst performing OPS!!!
 					-> we stay away from the db normalisation!
 				-> instead, we go with 1 big FLAT table!
 					-> DW is denormalised!
+				-> great for searching, poor performance on editing the data
 
+
+
+Big data is data too big for 1 machine 
+1 machine = 2 numbers 
+
+If I ask you to store 1,2,3 -> is this big data or small data?
+
+(Fault tolerance) [Almost all OLTP]
+M1-> 1,2			—replication— M3-> 1,2
+M2-> 3																M4-> 3
+
+GCP-> Google Colossus 
+
+Sharding (Fault tolerance) [All OLAP]
+
+M1-> 1,2			M2-> 2,3			M3-> 3,1 
+
+
+Big data-> great for searching, bad for editing
+Small data-> great for editing, bad for searching
+
+Searching:
+
+OLAP- M1-> 1,2			M2-> 2,3			M3-> 3,1 
+OLTP-> M1-> 1,2.   M2-> 2,3
+
+We want to search for 3, every operation takes 1ms
+
+OLTP-> 
+
+M1-> 1  2
+M2-> 2 3
+1st msecond-> M1 (1), M2(2)-> not found 
+2nd msecond-> M1(2), M2(3) -> found 
+
+Total time-> 2 milliseconds!
+
+OLAP-> 
+
+M1-> 1,2
+M2-> 2,3
+M3-> 3,1
+
+1st ms -> M1(1), M2(2), M3(3) -> Found!
+Total time-> 1ms!
+
+
+Editing is BAD in OLAP!
+New problem statement: we want to change 2 to 4 
+
+OLTP-> 
+
+M1-> 1  2
+M2-> 2 3
+
+1st ms -> M1 (1), M2 (2)
+2nd ms -> M1 (2), M2 (editing)
+3rd ms-> M1 (editing), M2 (3)
+4th ms-> end of search
+—— over——— (changes sent to replica as well)—— 
+Total cost-> 8ms
+
+OLAP-> 
+
+M1-> 1,2
+M2-> 2,3
+M3-> 3,1
+
+1st ms -> M1(1), M2(2), M3(3)
+2nd ms-> M1(2), M2(editing), M3(1)
+3rd ms-> M1(editing), M2(3), ——
+4th ms-> ——, ——, ——
+
+Total cost-> 12ms
+
+Even the slightest edits mean that you have to SCAN the entire warehouse!!!
 
 
 
