@@ -138,6 +138,7 @@ Extract-Transform-Load (ETL):
 	2. MISSION SPECIFIC- you need to know your entire data transformation journey before building the pipeline-> and its specific only to 1 task!
 	3. ML pipelines, data cleaning pipelines, Kubernetes pipelines, data migration pipelines
 	4. Cost effective for small teams
+	5. An ETL pipeline could talk to other ETL pipelines to form an ELT pipeline!
 
 Extract-Load-Transform (ELT):
 	1. Data may or may not require cleaning
@@ -146,6 +147,80 @@ Extract-Load-Transform (ELT):
 	4. Cost effective for LARGE teams
 	5. COLLECT EVERYTHING INTO THE CLOUD; and THEN FIGURE OUT WHAT TO DO NEXT!
 	6. Medical dataset-> HR dept wants to find out which patients need funding support, hospital management wants to find out which customers are more likely to book premium rooms; a doctor may want to look up records of a particular patient and share it with anonymisation with other doctors!
+	7. An ELT pipeline consists of multiple ETL pipelines
+
+
+The individual pipelines are usually ETL
+Multiple pipelines with STORAGE first-> ELT
+
+ETL-> 
+	1. Extract from on-premise Oracle DB
+	2. Change datatypes 
+	3. Load into on-premise Microsoft SQL Server
+
+
+	1. Extract from sensors 
+	2. Add timestamps 
+	3. Load into a no-sql database 
+
+	1. Extract from file
+	2. Write a python/SQL program to make changes
+	3. Write into a new file
+
+
+
+
+
+ELT->
+
+	1. Extract inventory, billing from multiple stores 
+	2. Load into Hadoop 
+	3. 
+		A)Using Spark figure out which inventory needs reshipping (ETL1)
+		B) Using Power BI to figure out top 10 selling products (EL1)
+		C) Using Hadoop to build a real time fraud detection process (no movement)
+
+
+Data Factory: 
+1. Linked services are dedicated network services 
+2. Datasets are a POINTER SCHEMA REPRESENTATION of data, not the ACTUAL data! -> schema, network details, how to connect
+
+
+Lab 1: https://learn.microsoft.com/en-us/azure/azure-sql/database/single-database-create-quickstart
+
+
+Lab 2: Create Data Factory and Storage Account
+ 
+Both cases-> please select the same Resource Group Name we created for SQL DB, and enter a globally unique name for the resource name
+
+other settings will remain at default (ONLY Resource Group name and resource name to be selected in both cases)
+
+Lab 3: Build pipeline to copy data in Data Factory
+https://learn.microsoft.com/en-us/azure/data-factory/tutorial-copy-data-portal
+
+Step 1: (Manage on left menu) Create Linked Service
+ 
+Step 2: (Author on left menu) Create datasets. Publish changes so that datasets are not lost on refresh. 
+ 
+Step 3: (Author on left menu) Create pipeline 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
