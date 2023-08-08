@@ -1,0 +1,152 @@
+
+
+[10:15 am] Shantanu Pandey
+Elasticity and scalability? 
+[10:16 am] Shantanu Pandey
+what's the diff?
+[10:17 am] Shantanu Pandey
+Elastic 
+[10:18 am] Shantanu Pandey
+IaaS - min to max VM count
+[10:18 am] Shantanu Pandey
+PaaS - it is NOT controllable by us- we can only control elasticity in terms of billing 
+[10:19 am] Shantanu Pandey
+Scalability - is planned in advance - typically for events, or growing size of the organization 
+[10:19 am] Shantanu Pandey
+Scalability is of two types-
+ 
+Horizontal- increasing number of VMs, keep size constant
+ 
+Vertical - increasing the size of machines, keep count constant
+[10:20 am] Shantanu Pandey
+Scalability could mean increase/decrease 
+[10:20 am] Shantanu Pandey
+Elastic behavior - increase and come back to original size 
+
+HDInsight 
+
+You have data- you analyse it
+
+Big data-> PB+ of data 
+
+Hadoop -> PB scale Operating System with distributed storage 
+				-> DISK is not as fast as RAM 
+				-> IN memory calculations push your data and process into RAM instead of disk+ram 
+									-> pretty expensive and will slow down rest of the OS 
+
+Spark to the rescue
+			- In memory calculation b/w GB to PB scale
+			- data could be anywhere in Hadoop or Hadoop compatible infrastructure 
+			- read limited data from Hadoop, process it in memory, and write results back to Hadoop 
+
+Storage- Hadoop or HDFS compatible (blob)
+Data could be either processed on Hadoop (disk+RAM) or Spark (RAM)
+
+But what if the data is not in HDFS?
+
+Bring the data in!!!
+
+1. Batch
+        1. SQL - Apache Hive
+                        1. Interactive queries 
+                        2. Offers views and stored procedures 
+                        3. Row level/column level security
+                        4. ~300ms of avg speed for large ops (GBs-TBs)
+        2. NoSQL - Apache HBase
+                        1. One of the largest no-sql databases!
+                        2. Powers- GMAIL, Outlook, Google Analytics, CCTVs….
+                        3. 100 MB in a single row with cell size of 10-50 MB (depends on hosting)
+2. Stream
+        1. Inwards/Ingest and process -> Apache Storm
+        2. Outbound/load-data-elsewhere -> Apache Kafka
+
+
+
+
+Products- Spark, Hadoop, Hive, HBase, Kafka and Storm (at the very minimum they are needed for any large organisation)
+
+			IAAS-> we need additional tools for monitoring, managements, security 
+
+Other tools-> Zookeeper (manages VMs count and scalability), Sqoop (ETL Tool)….
+
+
+ 																	Azure 		-  		GCP
+IaaS-Lift & Shift - HDInsight, DataProc
+Apache Spark with Extra capabilities- Databricks
+DW with Spark- Synapse Analytics, - 
+
+AAD against deep web: https://learn.microsoft.com/en-us/azure/active-directory/identity-protection/howto-identity-protection-simulate-risk
+
+
+
+
+Flight database:
+
+MOST searched queries-> DEP/ARR/TIME
+
+#JFK#BLR#2100
+Rowkey- AI302, passenger ticket number
+
+
+HDInsight—— breaking into smaller pieces-> 
+		Cloud Native:
+				HDFS— Azure blob storage/data lake 
+				Spark—	Databricks
+				Kafka— Events hub or IoT Hub 
+				Storm— convert all of it into Kafka 
+				HBase- Tables
+				Hive- Databricks metastore 
+				Sqoop - convert into independent HDInsight notebooks, and then automate via DataFactory OR just rebuild in data factory 
+				Zookeeper- ignore altogether 
+				
+
+1. Transfer all storage (COPY PASTE) from HDFS into blob/ADLSgen2 (HDFS compliant)- all you need to do is change connection strings and your existing programs will work as-is!
+                1. hdfs:// ——> wasbs:// or adls://  (azure), gs:// (GCP), s3:// (AWS) 
+                2. From localhost/hdfs url to respective storage URL
+2. Hive and HBase-> Hive into Databricks megastore, HBase into Azure Tables 
+                1. If you still prefer HBase on VMs- https://learn.microsoft.com/en-us/azure/hdinsight/hbase/apache-hbase-provision-vnet?wt.mc_id=searchAPI_azureportal_inproduct_rmskilling&sessionId=e0902fb823054a2aa21359ad943ae63b
+
+3. Transfer computing- Spark to Databricks  (time/job-based usage- standalone Spark + Hive)/Synapse (24X7 large enterprise use with other components)
+
+
+
+Blob storage-> by default blobs are FLAT-> there are no folders, no hierarchy and even if you keep folder names-> they are just names and visible only in the UI!
+
+Container1/folder1/file1 -> its actually the complete file name! There is NO such thing here as folder1! In Azure Portal only-> we see this as a UI
+
+BLOBS don’t support hierarchy-> the solution to this is DATA LAKE STORAGE (ADLSgen2)
+
+ADLSGen2-> enables folder-style hierarchy on top of blobs-> 
+	1. Data management and permissions assigning becomes easier
+	2. Take advantage of inheritance 
+	3. Better performance-> because we are not looking all over the lake but in specific folder-defined locations! 
+
+ACL -> access control list 
+			-> linux style rwx permissions for users, group and others
+			-> ls -l 
+					:			-rwxr-xr-x -> user can read/write/execute, group can only read and execute, others can only read and execute
+			-> chmod 755 myscript.sh
+					-> 111 101 101
+						& rwxrwxrwx 
+							rwxr-xr-x
+
+
+
+Dataset-> doesn’t have ANY data!
+			-> contains only schema, connection strings, metadata
+Delta lake builds datasets-> not multiple copies of data!
+
+ML engineers:
+Raw(Bronze) ->.   Clean (Silver) -> ML features (gold)
+(ACTUAL DATA)
+
+Data Analyst
+Raw(Bronze) ->.   Clean (Silver) -> Aggregates (gold)
+(ACTUAL DATA)
+
+Data Lake-> only ACTUAL DATA!
+Delta lake format-> contains chains of transformation to pass Data Lake contents and convert into whatever the final role needs!
+
+Delta lake format-> native format of Databricks (.delta)
+
+Delta lake architecture-> could’ve been implemented anywhere-> including Databricks or even a hard disk!
