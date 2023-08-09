@@ -150,3 +150,75 @@ Delta lake format-> contains chains of transformation to pass Data Lake contents
 Delta lake format-> native format of Databricks (.delta)
 
 Delta lake architecture-> could’ve been implemented anywhere-> including Databricks or even a hard disk!
+
+
+
+
+
+
+Language Support:
+
+Apache Spark (vanilla): Java, Scala, PySpark 
+
+
+HDInsight: Same as Apache Spark 
+
+Synapse: Shell/Powershell, Scala, PySpark, SQL, C#.NET,  Java
+
+Databricks: R, Sql, Scala, PySpark 
+
+Multiple Types of cluster for same Databricks/Synapse or other instances:
+
+ML: Raw Data -> Clean Data -> Feature Engineering -> Build ML Models-> evaluate them-> deploy
+
+
+Hardware requirements?
+
+Working with 10 PB of images. 
+RAW Data = Blob or Data Lake 
+Clean, Feature Engineering, Building ML Models, Evaluation = Databricks 
+Deployment = Databricks endpoints or Kubernetes 
+
+
+
+Clean, Feature Engineering, Building ML Models, Evaluation = Databricks 
+
+Clean 10PB of images = batch of 5 GB 
+
+Spark, HDFS, DB, majority = magic number is 3
+Replication factor of Spark = 3
+
+In the RAM, 5 GB of images = 15 GB of RAM (5 GB X replication factor)
+
+Clean/Feature Engineer = 2 machines of 8 GB RAM each, No GPU 
+
+Building ML Model = Computer Vision with Neural networks -> GPU
+								= 2 machine of 8 GB RAM each, 2 GB GPU 
+
+Evaluate = 1 machine of 4 GB RAM 
+
+Deployment = Kubernetes = 3 machines - each machine -> 4 GB Ram and 2000 IOPS
+IOPS = input/output per second 
+
+
+
+
+
+How will clusters communicate with each other?
+- Data Lake (cheap) or Databricks (Hive) metastore (performance)
+
+
+Now that infra is defined, we can break out notebooks (Databricks) as well:
+
+
+Notebook 0: which executes Notebook 1, 2, 3A, 4 in a sequence
+
+Notebook 1: read from Data Lake/raw, clean the data and write into data lake/clean
+Notebook 2: read from Data lake/clean, feature engineer, and write to data lake/features
+Notebook 3A: Runs notebook 3B multiple times with diff parameters to generate types of models
+Notebook 3B: read from data lake/features, prepare model, and write model in a model registry along with its performance score
+Notebook 4: read models’ performances from registry, and downloads the best model and creates a Kubernetes instance and deploys the best model 
+
+important: USE DELTA LAKE FORMAT TO AVOID MULTIPLE STORAGE BILLING!
+
+
