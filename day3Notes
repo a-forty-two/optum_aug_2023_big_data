@@ -1,0 +1,73 @@
+
+———————————————————————————
+
+[10:21 am] Shantanu Pandey
+Cyclic redundancy check 
+[10:24 am] Shantanu Pandey
+Directed Acyclic Graph 
+[10:25 am] Shantanu Pandey
+Spark, TensorFlow, DialogFlow, Airflow, Beam, Hadoop, Databricks, chatbots -> DAG
+
+
+2 kind of programming languages:
+
+IMPERATIVE: Where we tell computer how to do things
+						- C/C++, Java, C#, Python 
+
+DECLARATIVE: Where we tell computer what to do (computer will figure out how to do)
+						- HTML/CSS, JS, PySpark, Scala, R
+
+
+Big Data: Apache Spark/Databricks/Hadoop/Beam/TF: we don’t explicitly code, we tell the associate engine what do we want; and design a GRAPH telling so!
+
+This graph is built with help of programming languages- Scala, Java, C#, PySpark, SQL etc…. 
+
+This graph once built may not be the BEST GRAPH possible- and that’s why the big data system is going to optimise your GRAPH and reduce its length. 
+
+
+Apache Beam is the most effective example of DAGs and works very well with Spark (analysing or ML or DE) and Kubernetes (for deployments) 
+
+Sample:
+
+PCollection_out = (PCollection_in | PTransform_1 | PTransform_2 | PTransform_3)
+
+
+Full usage: (local machines are just fine to dev/test!)
+
+import apache_beam as beam
+if __name__ == '__main__': 
+	with beam.Pipeline(argv=sys.argv) as p: 
+		(p 
+		| beam.io.ReadFromText('gs://...') 
+		| beam.FlatMap(count_words) 
+		| beam.io.WriteToText('gs://...') ) 
+
+
+# end of with-clause: runs, stops the pipeline
+
+
+
+
+
+CATALOG TABLES are DELTA TABLES that are registered in both Spark and SQL. You will be able to refer the same delta data whether you check via Spark (Databricks) or via HIVE METASTORE. 
+
+2 types:
+	- managed (internal) - data + metadata (schema, connection etc.) -> all of it is stored in HIVE metastore
+	- external - data resides on an external source, only metadata is stored in HIVE metastore 
+
+If you perform del ops:
+	- managed - data + metadata will be deleted (files in data lake/delta tables will disappear)
+	- external - only metadata will be deleted (the files or delta tables will still be in the storage!)
+
+
+
+Data lake -> dbutils.fs.mount 
+
+my_loc = “/mnt/lake/mycsv.csv”
+
+		-> USE DELTA LOCATION  ‘{0}’.format(my_loc)    -> external table
+
+df.saveAsTable( ) -> managed table
+
+
+
