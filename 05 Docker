@@ -1,0 +1,154 @@
+1. Create linux vm: https://learn.microsoft.com/en-us/azure/virtual-machines/linux/quick-create-portal?tabs=ubuntu
+      Observe and note the PUBLIC IP address of this machine. 
+      On the left menu, navigate to 'NETWORKING', and add an inbound rule with default values and Destination port range as 5000
+
+2. ssh into the vm
+
+3. run the command
+        sudo apt-get update 
+        
+
+4. Install virtual environment 
+        sudo apt-get install python3-venv
+
+5. Create a new virtual env and activate it:
+        python3 -m venv myvenv
+        source myvenv/bin/activate
+
+
+6. Run following commands:
+        mkdir myapp
+        cd myapp
+        wget https://raw.githubusercontent.com/a-forty-two/optum_aug_2023_big_data/main/app.py
+
+7. Figure out all dependencies in my program:
+    For python:      import <dependency> or from <dependency> import library 
+    Java:      import
+    C#         using
+    C++        #include
+
+
+Now create a file called requirements.txt where you will mention all your application/library dependencies!
+
+For this tutorial, we have only one dependency on flask, run the following command to create dependency file:
+
+echo "flask">requirements.txt
+
+8. using following cammand, verify that you now have 2 files- app.py and requirements.txt
+        ls -l
+
+9. Observe how api.py doesn't have executable permissions. Run the following commands to provide execution permissions to our api:
+
+        chmod 755 api.py
+        ls -l
+
+
+10. Install all dependencies (to test the program API locally):
+
+        pip3 install -r requirements.txt
+
+11. Test app is working locally by running:
+        python3 app.py
+
+Then navigate to the public IP address and port 5000. For example, if your IP was 1.2.3.4, then go to 1.2.3.4:5000
+
+Observe that your app server is working fine locally!
+
+Close your web server by ctrl + c
+
+
+12. Install docker using 
+
+      sudo apt-get install docker.io
+
+
+13. Now we will create a new file called Dockerfile. You cannot pick any other name, and there is no extension to this file. 
+
+We begin by using a base image. For us its python3. 
+
+        FROM python:3
+
+Then, we need a folder to store our program (API). This will also become your PRESENT WORKING DIRECTORY. 
+
+        WORKDIR app
+
+Copy your files from local machine (present working directory- myapp) to the container (present working directory- app). In Docker, . means present working directory. 
+
+        COPY . . 
+
+You can use RUN command to execute anything on the underlying container. We will use this to update container and install dependencies. 
+
+        RUN apt-get update
+        RUN pip3 install -r requirements.txt
+
+The command to run your app now is ENTRYPOINT. We need to run python3 with app.py as an argument. 
+
+        ENTRYPOINT ["python3", "app.py"]
+
+
+
+14. Build the container image using docker build command. Remember-> . stands for present working directory. So you always need to be in the same folder as a Dockerifle to run this command!
+
+        sudo docker build . -t mylocalapi
+
+Container images are NOT the same things as a CONTAINER. A container is a RUNNING container image. 
+
+Think of image as a CLASS and container as an OBJECT of that class!
+
+
+Now verify your images and containers. We should have 0 containers, becuase only image definition is built. And we should have 2 images- mylocalapi that we build, and the python:3 that it included. 
+
+        sudo docker ps
+        sudo docker images 
+
+
+
+15. Run this container image to build a container! We run the container in detached mode using -d command so that we can continue using terminal for other things. 
+
+        sudo docker run -d -p 5000:5000 mylocalapi --name mycontainer
+
+
+
+16. At this point, validate that your container is also up and running:
+
+        sudo docker ps 
+
+
+Then navigate to the public IP address and port 5000. For example, if your IP was 1.2.3.4, then go to 1.2.3.4:5000
+
+Observe that your CONTAINERIZED app server is working fine locally!
+
+
+17. For next steps, please first create an account (with PERSONAL EMAIL ONLY) on https://hub.docker.com/
+      Note your username so that you can refer to it in future. 
+
+18. Login to docker on your VM. 
+
+            sudo docker login 
+
+
+19. Once login is successful, we can push built images into our account!
+
+20. You will need to RENAME your image from a local image to something that can be tagged on your docker-hub account. Format is <username>/<imagename>:<tagname>
+
+        sudo docker tag mylocalapi afortytwo/flaskmojojojo:jojo
+
+Please replace my username, image name and tag name with your own ORIGINAL names please. 
+
+21. Verify that image is created
+
+            sudo docker images 
+
+22. Go to hub.docker.com and create a repository by the same name as used in step 20. The name I chose was flaskmojojo. 
+
+23. Execute the following to push locally tagged image to your docker hub account. 
+
+            sudo docker push afortytwo/flaskmojojojo:tomato
+
+
+Now ask your friends to download and run your image using:
+
+sudo docker pull <yourusername>/<imagename>:<tagname>
+sudo docker run <yourusername>/<imagename>:<tagname>  
+
+
