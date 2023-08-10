@@ -1,0 +1,22 @@
+Prerequisites:
+
+1. IoT Hub
+2. Data Lake or blob storage
+
+1. Once IoT Hub is created, do two things on left menu:
+  A. Devices-> create a new device by entering just the name. Keep other values default. 
+  B. Message Routing-> create a new route to Storage Account 
+
+2. Navigate to https://azure-samples.github.io/raspberry-pi-web-simulator/
+      On line numbers as following, make appropriate changes:
+          A. Line 15: Connection string to what you get from Device.
+          B. Line 29: Replace device name to what you created. 
+          C. Hit run, and verify that output terminal shows following message
+
+Sending message: {"messageId":1,"deviceId":"icecreamtruck","temperature":21.70855139973279,"humidity":61.382735578941464}
+> 
+Message sent to Azure IoT Hub
+
+
+
+- At this point, wait for 4 minutes-> then navigate to your data lake container, and verify that (at least) 2 blobs should be present
