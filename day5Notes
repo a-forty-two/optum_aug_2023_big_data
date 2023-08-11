@@ -1,0 +1,55 @@
+Data Analysis:
+NoCode- Power BI- PL 300: Power BI Data Analyst 
+SQL - Power BI + SQL DW- DP 500: Enterprise Data Analyst
+NoCode- Looker - Looker Data Analyst, LookML Model Developer
+PySpark/Scala/SQL- Databricks- Certified Data Analyst 
+
+Data Engineering:
+Microsoft Azure Data Engineer-Associate
+Databricks Certified Data Engineer 
+Google Cloud Certified Professional Data Engineer
+Kubernetes- Architect Certification 
+
+Data Sciences:
+Microsoft Azure Data Scientist Associate
+Microsoft Azure AI Engineer Associate 
+Databricks Certified Data Scientist
+Google Cloud Certified Professional Machine Learning Dev
+TensorFlow Developer 
+
+In Azure Machine Learning:
+
+
+4 types of infrastructure options:
+
+1. Compute Instance- single machines
+        1. Use cases
+                    1. Data cleaning, simple ETL, running notebooks
+                    2. Very simple ML (like scikit learn)
+        2. Where not to use:
+                    1. When you want a good ML model, not just a quick and dirty one 
+                    2. Neural networks 
+                    3. Big data 
+
+2. Compute Clusters- distributed machines with fault tolerance and HIGH RESOURCES/Performance!
+        1. Use cases
+                    1. Almost everything :) unless you want Spark or a customised infra
+                    2. TRAINING the model only
+        2. Where not to use
+                    1. Almost nowhere :) unless you want spark
+                    2. Deployment of the model
+
+3. Kubernetes - distributed machines with High Availability and fault tolerance
+                1. Where to use:
+                        1. Deployment of model containers
+                        2. To build distributed pre-trained model pipelines- KubeFlow (Databricks- MLFlow)
+                2. Where not to use:
+                        1. For Dev/test - we have special arrangements exclusive to azure- where Kuberentes allows us to deploy just 1 machine in Non HA mode!
+                        2. For full blown ML project training!
+
+4. Attached Computing:
+                1. Databricks, Synapse Analytics
+                2. You want to use Azure ML components but infra could be either SQL pools or Apache Spark 
+                3. Biggest benefit- is cost and speed! 
+                                1. Saving cost by using existing big data infra!
+                                2. Saving speed by avoiding mass data-movement between azure ML and big data services!
