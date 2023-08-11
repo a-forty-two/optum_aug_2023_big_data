@@ -1,0 +1,31 @@
+IoT Hub v/s Event Hub
+
+IoT hub -> bidirectional communication
+									device to cloud AND cloud to device
+Events hub-> unidirectional communication 
+							either device to cloud OR cloud to device
+
+Device-> anything throwing data at you
+
+IoT Hub can be used in 3 ways:
+
+1. Live Communication
+                                1. Connect to events hub
+                                2. Connect to service bus (topic/Queue)
+                                3. Stream Analytics (SQL for streaming!)
+                                4. Databricks (Spark) Structured Stream
+
+2. Stream to (mini) Batch 
+                                1. Data lake or Blobs
+                                2. SQL or Cosmos 
+
+3. Devices offline?
+                                1. Mining robots working underground who come up to the surface once a week!
+                                2. IoT Hub can store messages up to 7 days by default or 14 days (in Apache Kafka mode)
+
+
+
+2 kinds of firewall/NSG rules:
+
+Inbound: who can talk to my machine
+Outbound: who can my machine talk to
